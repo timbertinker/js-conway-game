@@ -43,19 +43,75 @@ describe('Service: frame', function () {
     expect(callback.calls.count()).toEqual(6);
   });
 
+  describe('aliveNeighbours', function () {
+
+    beforeEach(function () {
+      frame.init(3, 3);
+    });
+
+    it('should always return eight points', function () {
+      var nbs = frame.neighbours(0, 0);
+      expect(nbs.length).toEqual(8);
+      expect(frame.aliveNeighbours(0, 0)).toEqual(0);
+    });
+
+    it('should have one alive point', function () {
+      frame.active(1, 2);
+      frame.active(1, 1);
+      expect(frame.aliveNeighbours(1, 1)).toEqual(1);
+    });
+
+  });
+
   describe('next', function () {
 
-    beforeEach(function() {
-      frame.init(20, 10);
+    beforeEach(function () {
+      frame.init(3, 3);
     });
 
-    it('should die current point and activate next point when next is called', function () {
-      frame.active(5, 4);
+    it('should return next frame with all died points when points given were died', function () {
       frame.next();
-      expect(frame.getPoint(5, 4).alive).toBe(false);
-      expect(frame.getPoint(6, 4).alive).toBe(true);
+      var checkPoint = jasmine.createSpy('checkPoint');
+      frame.eachPoint(function (x, y, point) {
+        checkPoint();
+        expect(point.alive).toBe(false);
+      });
+      expect(checkPoint.calls.count()).toEqual(9);
     });
 
+    it('should return next frame with one alive point when there is two points beside it', function () {
+      frame.active(1, 1);
+      frame.active(0, 2);
+      frame.active(2, 0);
+      frame.next();
+      var checkPoint = jasmine.createSpy('checkPoint');
+      frame.eachPoint(function (x, y, point) {
+        checkPoint();
+        if (x == 1 && y == 1) {
+          expect(point.alive).toBe(true);
+        } else {
+          expect(point.alive).toBe(false);
+        }
+      });
+      expect(checkPoint.calls.count()).toEqual(9);
+    });
+
+    it('should return next frame with one alive point when there is three points beside it', function () {
+      frame.active(0, 0);
+      frame.active(0, 2);
+      frame.active(2, 0);
+      frame.next();
+      var checkPoint = jasmine.createSpy('checkPoint');
+      frame.eachPoint(function (x, y, point) {
+        checkPoint();
+        if (x == 1 && y == 1) {
+          expect(point.alive).toBe(true);
+        } else {
+          expect(point.alive).toBe(false);
+        }
+      });
+      expect(checkPoint.calls.count()).toEqual(9);
+    });
   });
 
 });

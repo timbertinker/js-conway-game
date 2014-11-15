@@ -22,6 +22,8 @@ describe('Service: game', function () {
 
     spyOn(canvas, 'drawPoint');
     spyOn(canvas, 'clearPoint');
+
+    spyOn(game, 'initAlives');
   }));
 
   describe('start', function(){
@@ -47,7 +49,7 @@ describe('Service: game', function () {
       $interval.flush(refreshPeriod);
       expect(frame.eachPoint).toHaveBeenCalled();
 
-      drawPoint(1, 2, true);
+      drawPoint(1, 2, {alive: true});
       expect(canvas.drawPoint).toHaveBeenCalledWith(1, 2);
       expect(canvas.clearPoint.calls.any()).toBe(false);
     }));
@@ -55,7 +57,7 @@ describe('Service: game', function () {
     it('should clear point when it is died', inject(function () {
       $interval.flush(refreshPeriod);
 
-      drawPoint(1, 2, false);
+      drawPoint(1, 2, {alive: false});
       expect(canvas.clearPoint).toHaveBeenCalledWith(1, 2);
       expect(canvas.drawPoint.calls.any()).toBe(false);
     }));
