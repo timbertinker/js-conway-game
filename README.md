@@ -1,7 +1,7 @@
 Conway's Game of Life | Code retreat on Nov 15, 2014
 ==============
 
-##Introduction
+## Introduction
 
 The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
 
@@ -24,8 +24,8 @@ The solution is written in Javascript.
 
 #### How to run
 
-  grunt server
+    grunt server
 
 #### Run all unit test
 
-  grunt test
+    grunt test
